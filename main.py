@@ -3,10 +3,20 @@ import os
 
 if __name__ == "__main__":
 
-    #id = 123946
+    path = "plot/"
+    if not os.path.exists(path):
+        os.makedirs(path)
 
-    #b = Book(id)
-    #b.SaveAllImages('C:/Users/joshua.jeffmarander/desktop/plot')
+
+    """id = 123946
+
+    b = Book(id)
+    dir = path + b.name
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+    b.SaveAllImages(dir)"""
+
+
     import time
 
     start_time = time.time()

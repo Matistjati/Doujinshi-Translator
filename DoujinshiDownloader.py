@@ -18,18 +18,18 @@ class Book:
                 print("a man has fallen into the lego river")
                 return ""
 
-    def __init__(self, bookId, calledFromThread=False):
+    def __init__(self, bookId):
         self.book_id = bookId
-        self.book_info = self.GetBookInfo(self) if calledFromThread else self.GetBookInfo()
+        self.book_info = self.GetBookInfo()
         self.bad = False
+
         if self.book_info == "":
             self.bad = True
             return
+
         self.media_id = self.book_info["media_id"]
         self.page_count = self.book_info["num_pages"]
         self.name = self.book_info["title"]["english"]
-        if calledFromThread:
-            return self
 
     def SaveImage(self, path, page, imageType):
         if os.path.isfile(path):
@@ -62,7 +62,7 @@ class Search:
     def GetSearchInfo(self):
         sort = "popular" if self.popular else ""
         url = "http://nhentai.net/api/galleries/search?query=" + self.query + "&page=" + str(self.page) + "&sort=" + sort
-
+        print(url)
         resp = requests.get(url=url)
         data = resp.json()
         return data
@@ -75,10 +75,7 @@ class Search:
         self.result = self.searchInfo["result"]
         self.books = []
 
-        #for book in self.result:
-        #    self.books.append(Book(book["id"]))
         executor = ThreadPoolExecutor(len(self.result))
-        #bookIds = []
         for i in range(len(self.result)):
             self.books.append({})
 
