@@ -1,8 +1,7 @@
 from DoujinshiDownloader import *
 import os
 
-if __name__ == "__main__":
-
+def main():
     path = "plot/"
     if not os.path.exists(path):
         os.makedirs(path)
@@ -17,13 +16,18 @@ if __name__ == "__main__":
     b.SaveAllImages(dir)"""
 
 
-    import time
 
-    start_time = time.time()
     q = Search("females only", 1, True)
     path = "plot/"
     if not os.path.exists(path):
         os.makedirs(path)
     q.DownloadBooks(path)
 
-    print("--- %s seconds ---" % (time.time() - start_time))
+
+if __name__ == "__main__":
+    if True:
+        main()
+    else:
+        import cProfile
+
+        cProfile.run('main()')
