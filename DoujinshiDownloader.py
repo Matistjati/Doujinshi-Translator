@@ -3,13 +3,14 @@ import urllib
 import os
 from concurrent.futures import ThreadPoolExecutor
 
+RESPONSE_OK = 200
+RESPONSE_BUSY = 503
 
 class Book:
     # Get some info about the book via an api call about the book, which will grant info such as media id and page count
     # Example: https://nhentai.net/api/gallery/233960
     def GetBookInfo(self):
-        RESPONSE_OK   = 200
-        RESPONSE_BUSY = 503
+
         while True:
             url = "https://nhentai.net/api/gallery/" + str(self.book_id)
             resp = requests.get(url=url)
@@ -54,27 +55,42 @@ class Book:
         url = "https://i.nhentai.net/galleries/" + str(self.media_id) + "/" + str(page) + imageType
         # Example url: https://i.nhentai.net/galleries/770497/8.jpg
         # Download the image
+        response = requests.get(url)
+        if response.status_code != RESPONSE_OK:
+            print(self.book_id)
+            print(self.book_info["images"]["pages"][page-1]["t"])
+            print(self.book_info["images"]["pages"][page]["t"])
+            print(self.book_info["images"]["pages"][page + 1]["t"])
+            print(page)
+            print(url)
+            print(response.status_code)
+
         with open(path, 'wb') as file:
-            file.write(requests.get(url).content)
+            file.write(response.content)
 
 
     # A method for calling saveImage, has to be this way as python cannot pickle class members
     # Here Book is also a function, which when called downloads a book of the provided id
     def __call__(self, dir, page):
         # Get the image type of the current page in the book
-        type = self.book_info["images"]["pages"][page]["t"]
+        # We index with page - 1 because arrays start at 0 and nhentai books do not
+        type = self.book_info["images"]["pages"][page - 1]["t"]
         type = ".jpg" if type == "j" else ".png"
 
         # Save the image
         self.SaveImage(dir + type, page, type)
 
     def SaveAllImages(self, path):
-        # If an error has occured, do'nt even try
         if self.bad:
             return
+        # Multithread the book downloading
+        imageDownloader = ThreadPoolExecutor(self.page_count)
 
+        # The method we call is __call__ of book, which is a wrapper for calling SaveImage
         for page in range(self.page_count):
-            self.SaveImage(path + "/" + str(page + 1) + ".jpg", page + 1, ".jpg")
+            imageDownloader.submit(self, path + "/" + str(page + 1), page + 1)
+
+        imageDownloader.shutdown()
 
 # Method to create a book. Must be outside a class to avoid python's multithreading headaches
 def CreateBook(id, bookList, i):
