@@ -18,9 +18,6 @@ def main():
 
     else:
         q = Search("females only", 1, True)
-        path = "plot/"
-        if not os.path.exists(path):
-            os.makedirs(path)
         q.DownloadBooks(path)
 
 

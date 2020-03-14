@@ -1,6 +1,7 @@
 import requests
 import urllib
 import os
+from io import BytesIO
 from concurrent.futures import ThreadPoolExecutor
 
 RESPONSE_OK = 200
@@ -26,7 +27,7 @@ class Book:
             # If there is another error which we do not know how to handle, signal an error by returning ""
             # We also print the error to give the developer a heads up
             else:
-                print("a man has fallen into the lego river because of " + int(resp.status_code))
+                print("a man has fallen into the lego river because of " + str(resp.status_code))
                 return ""
 
     # Initialize a book given a book id
@@ -47,6 +48,13 @@ class Book:
         self.page_count = self.book_info["num_pages"]
         self.name = self.book_info["title"]["english"]
 
+    def GetCover(self):
+        url = f"https://t.nhentai.net/galleries/{self.media_id}/cover.jpg"
+        response = requests.get(url)
+        file = BytesIO(response.content)
+        file.name = "cover.jpg"
+        return file
+        
     def SaveImage(self, path, page, imageType):
         # If the image already exists, pass
         if os.path.isfile(path):
@@ -57,13 +65,10 @@ class Book:
         # Download the image
         response = requests.get(url)
         if response.status_code != RESPONSE_OK:
-            print(self.book_id)
-            print(self.book_info["images"]["pages"][page-1]["t"])
-            print(self.book_info["images"]["pages"][page]["t"])
-            print(self.book_info["images"]["pages"][page + 1]["t"])
-            print(page)
-            print(url)
-            print(response.status_code)
+            print("Error downloading " + url)
+            print("Error code: " + str(response.status_code))
+            print("Book id: " + str(self.book_id))
+            print("Image type: " + self.book_info["images"]["pages"][page - 1]["t"])
 
         with open(path, 'wb') as file:
             file.write(response.content)
