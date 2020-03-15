@@ -1,7 +1,5 @@
 import sys
-sys.path.insert(0, './Nhentai-api')
-
-from DoujinshiDownloader import *
+from Dependencies.Nhentai_api.Nhentai_api import *
 import os
 
 def main():

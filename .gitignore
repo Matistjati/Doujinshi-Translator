@@ -131,3 +131,6 @@ dmypy.json
 # Big images
 Plot/
 Nhentai-api/
+Scripts/
+pip-selfcheck.json
+pyvenv.cfg
