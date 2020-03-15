@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, './Nhentai-api')
+
 from DoujinshiDownloader import *
 import os
 
@@ -6,7 +9,7 @@ def main():
     if not os.path.exists(path):
         os.makedirs(path)
 
-    if False:
+    if True:
         id = 123946
 
         b = Book(id)
