@@ -1,5 +1,6 @@
 import sys
-from Dependencies.Nhentai_api.Nhentai_api import *
+sys.path.insert(0,"Dependencies/Nhentai-api")
+from Nhentai_api import *
 import os
 
 def main():
