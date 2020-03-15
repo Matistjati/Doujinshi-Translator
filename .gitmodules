@@ -1,3 +1,3 @@
-[submodule "dependencies/nhentai_api"]
-	path = dependencies/nhentai_api
-	url = https://github.com/Matistjati/Nhentai-api
+[submodule "Dependencies/nhenta-api"]
+	path = Dependencies/nhenta-api
+	url = https://github.com/Matistjati/Nhentai-api.git
