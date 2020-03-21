@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
         start_time = time.time()
         main()
-        print("Program execution finisged in --- %s seconds ---" % (time.time() - start_time))
+        print("Program execution finished in --- %s seconds ---" % (time.time() - start_time))
     else:
         import cProfile
 
