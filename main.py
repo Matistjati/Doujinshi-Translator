@@ -8,19 +8,19 @@ def main():
     if not os.path.exists(path):
         os.makedirs(path)
 
-    if True:
+    if False:
         id = 123946
 
         b = Book(id)
         dir = path + b.name
         if not os.path.exists(dir):
             os.makedirs(dir)
-        b.SaveAllImages(dir)
+        b.save_all_images(dir)
 
 
     else:
         q = Search("females only", 1, True)
-        q.DownloadBooks(path)
+        q.download_books(path)
 
 
 if __name__ == "__main__":
