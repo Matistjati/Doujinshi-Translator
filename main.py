@@ -8,7 +8,8 @@ def main():
     if not os.path.exists(path):
         os.makedirs(path)
 
-    if False:
+    test_case = 2
+    if test_case == 0:
         id = 123946
 
         b = Book(id)
@@ -18,9 +19,18 @@ def main():
         b.save_all_images(dir)
 
 
-    else:
+    elif test_case == 1:
         q = Search("females only", 1, True)
         q.download_books(path)
+
+    elif test_case == 2:
+        id = 123946
+
+        b = Book(id)
+        print(b.get_tags())
+
+    else:
+        print("Invalid test case")
 
 
 if __name__ == "__main__":
